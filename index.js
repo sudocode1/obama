@@ -15,7 +15,7 @@ var pingResponse = [
 
 bot.on("ready", async () => {
     console.log(`${bot.user.tag} is online!`)
-    bot.user.setPresence({ game: { name: 'o!help' }, status: 'online' })
+    bot.user.setActivity("you", {type: "WATCHING"})
 });
 
 bot.on("message", async message => {
@@ -72,6 +72,89 @@ bot.on("message", async message => {
         .addField("Server", message.guild.name)
 
         return message.channel.send(user);
+    }
+    // credit to TSC for help with this [kick]
+    if(cmd === `${prefix}kick`){
+        let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if(!kUser) return message.channel.send("Invalid Arguments.");
+        let kReason = args.join(" ").slice(22);
+        if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply("nice try");
+        if(kUser.hasPermission("MANAGE_MESSAGES")) return message.reply("That person is unable to be kicked!");
+
+
+
+        let kickEmbed = new Discord.RichEmbed()
+        .setDescription("Kick")
+        .setColor("#ff0000")
+        .addField("Kicked User", `${kUser} with the ID ${kUser.id}`)
+        .addField("Kicked by", `<@${message.author.id}> with the ID ${message.author.id}`)
+        .addField("Time", message.createdAt)
+        .addField("Reason", kReason);
+
+        let kickChannel = message.guild.channels.find(`name`, `warnings`);
+        if(!kickChannel) return message.channel.send("#warnings is not found!");
+
+        message.guild.member(kUser).kick(kReason)
+        kickChannel.send(kickEmbed);
+
+
+        return;
+    }
+
+        if(cmd === `${prefix}kick`){
+        let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if(!kUser) return message.channel.send("Invalid Arguments.");
+        let kReason = args.join(" ").slice(22);
+        if(!message.member.hasPermission("KICK_MEMBERS")) return message.reply("nice try");
+        if(kUser.hasPermission("MANAGE_MESSAGES")) return message.reply("That person is unable to be kicked!");
+
+
+
+        let kickEmbed = new Discord.RichEmbed()
+        .setDescription("Kick")
+        .setColor("#ff0000")
+        .addField("Kicked User", `${kUser} with the ID ${kUser.id}`)
+        .addField("Kicked by", `<@${message.author.id}> with the ID ${message.author.id}`)
+        .addField("Time", message.createdAt)
+        .addField("Reason", kReason);
+
+        let kickChannel = message.guild.channels.find(`name`, `warnings`);
+        if(!kickChannel) return message.channel.send("#warnings is not found!");
+
+        message.channel.send("Member Kicked!")
+        message.guild.member(kUser).kick(kReason)
+        kickChannel.send(kickEmbed);
+
+
+        return;
+    }
+
+    if(cmd === `${prefix}ban`){
+        let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if(!bUser) return message.channel.send("Invalid Arguments.");
+        let bReason = args.join(" ").slice(22);
+        if(!message.member.hasPermission("BAN_MEMBERS")) return message.reply("nice try");
+        if(bUser.hasPermission("MANAGE_MESSAGES")) return message.reply("That person is unable to be banned!");
+
+
+
+        let banEmbed = new Discord.RichEmbed()
+        .setDescription("Ban")
+        .setColor("#ff0000")
+        .addField("Banned User", `${bUser} with the ID $bkUser.id}`)
+        .addField("Banned by", `<@${message.author.id}> with the ID ${message.author.id}`)
+        .addField("Time", message.createdAt)
+        .addField("Reason", bReason);
+
+        let banChannel = message.guild.channels.find(`name`, `warnings`);
+        if(!banChannel) return message.channel.send("#warnings is not found!");
+
+        message.channel.send("Member banned!");
+        message.guild.member(bUser).ban(bReason);
+        banChannel.send(banEmbed);
+
+
+        return;
     }
 });
 
