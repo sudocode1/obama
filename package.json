@@ -9,6 +9,7 @@
   "author": "iris",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "ms": "^2.1.2"
   }
 }
