@@ -42,16 +42,39 @@ var pingResponse = [
 
 bot.on("ready", async () => {
     console.log(`${bot.user.tag} is online!`)
-    bot.user.setActivity("you", {type: "WATCHING"})
+    bot.user.setActivity("you | o!help", {type: "WATCHING"})
+});
+
+bot.on("guildMemberAdd", async member => {
+    console.log(`${member.id} joined a server.`);
+
+    let welcomechannel = member.guild.channels.find(`name`, `welcome`);
+    welcomechannel.send(`${member} has joined!`)
+});
+
+bot.on("guildMemberRemove", async member => {
+    console.log(`${member.id} left a server.`);
+
+    let welcomechannel = member.guild.channels.find(`name`, `welcome`);
+    welcomechannel.send(`${member} has left!`)
 });
 
 bot.on("message", async message => {
     if(message.author.bot) return;
     if(message.channel.type === "dm") return message.channel.send("My commands are unvailable in DMs!");
-    if(!message.content.startsWith("o!")) return;
-    
 
-    let prefix = botconfig.prefix;
+    let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
+
+    if(!prefixes[message.guild.id]){
+        prefixes[message.guild.id] = {
+            prefixes: botconfig.prefix
+        }
+    }
+
+    let prefix = prefixes[message.guild.id].prefixes;
+    
+    if(!message.content.startsWith(`${prefix}`)) return;
+    
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
@@ -74,5 +97,10 @@ bot.on("message", async message => {
 
     
 });
+
+
+  
+
+
 
 bot.login(botconfig.token)
