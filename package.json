@@ -1,0 +1,14 @@
+{
+  "name": "obama",
+  "version": "0.0.1",
+  "description": "obama bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "iris",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
